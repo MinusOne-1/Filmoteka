@@ -33,6 +33,11 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>֍ Show all films</string>
     </property>
@@ -46,8 +51,13 @@
       <height>51</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>11</pointsize>
+     </font>
+    </property>
     <property name="text">
-     <string>֍ Add film</string>
+     <string>֍ Search film</string>
     </property>
    </widget>
   </widget>
