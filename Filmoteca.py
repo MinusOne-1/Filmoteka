@@ -14,6 +14,7 @@ class DBSaper(QMainWindow):
         self.addfilm.clicked.connect(self.findFilmWindow)
         self.showAll_b.clicked.connect(self.showAllFilms)
         self.genres = []
+        self.titles = []
 
     def showAllFilms(self):
         cur = self.con.cursor()
@@ -21,16 +22,19 @@ class DBSaper(QMainWindow):
         for i in range(0, 18000, 1000):
             result += cur.execute(
                 '''Select title, year, genre, duration from Films WHERE id BETWEEN ? AND ?''', (i, i + 1000)).fetchall()
+        self.titles = [description[0] for description in cur.description]
         self.loadDataToTable(result)
 
     def loadDataToTable(self, data):
         cur = self.con.cursor()
         self.tableWidget.setRowCount(len(data) + 1)
         self.tableWidget.setColumnCount(4)
-        self.tableWidget.setItem(0, 0, QTableWidgetItem('Title'))
-        self.tableWidget.setItem(0, 1, QTableWidgetItem('Year'))
-        self.tableWidget.setItem(0, 2, QTableWidgetItem('Genre'))
-        self.tableWidget.setItem(0, 3, QTableWidgetItem('Duration'))
+        #получение заголовков
+        self.tableWidget.setHorizontalHeaderLabels(self.titles)
+        self.tableWidget.horizontalHeaderItem(0).setToolTip("Название")
+        self.tableWidget.horizontalHeaderItem(1).setToolTip("Год выпуска")
+        self.tableWidget.horizontalHeaderItem(2).setToolTip("Жанр")
+        self.tableWidget.horizontalHeaderItem(3).setToolTip("Длительность")
         # Заполнили таблицу полученными элементами
         for i, elem in enumerate(data):
             for j, val in enumerate(elem):
@@ -73,6 +77,7 @@ class DBSaper(QMainWindow):
         else:
             sql_ask += 'duration = ' + str(duration)
         res = cur.execute(sql_ask).fetchall()
+        self.titles = [description[0] for description in cur.description]
         self.loadDataToTable(res)
 
 
